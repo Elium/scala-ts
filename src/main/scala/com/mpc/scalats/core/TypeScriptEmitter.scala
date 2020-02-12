@@ -49,7 +49,7 @@ object TypeScriptEmitter {
       s"$name<${params.map(getTypeRefString).mkString(", ")}>"
     case UnknownTypeRef(typeName) => typeName
     case TypeParamRef(param) => param
-    case UnionType(inner1, inner2) => s"(${getTypeRefString(inner1)} | ${getTypeRefString(inner2)})"
+    case UnionType(inners@_*) => inners.map(getTypeRefString).mkString("(","|", ")")
     case NullRef => "null"
     case UndefinedRef => "undefined"
   }

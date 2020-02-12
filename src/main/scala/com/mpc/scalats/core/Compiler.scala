@@ -57,7 +57,7 @@ object Compiler {
     case ScalaModel.TypeParamRef(name) =>
       TypeScriptModel.TypeParamRef(name)
     case ScalaModel.OptionRef(innerType) if config.optionToNullable && config.optionToUndefined =>
-      TypeScriptModel.UnionType(TypeScriptModel.UnionType(compileTypeRef(innerType), NullRef), UndefinedRef)
+      TypeScriptModel.UnionType(compileTypeRef(innerType), NullRef, UndefinedRef)
     case ScalaModel.OptionRef(innerType) if config.optionToNullable =>
       TypeScriptModel.UnionType(compileTypeRef(innerType), NullRef)
     case ScalaModel.OptionRef(innerType) if config.optionToUndefined =>

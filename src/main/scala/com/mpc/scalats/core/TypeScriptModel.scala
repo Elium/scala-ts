@@ -40,7 +40,7 @@ object TypeScriptModel {
 
   case class TypeParamRef(name: String) extends TypeRef
 
-  case class UnionType(inner1: TypeRef, inner2: TypeRef) extends TypeRef
+  case class UnionType(inners: TypeRef*) extends TypeRef
 
   case object AccessModifier {
 
