@@ -13,10 +13,9 @@ lazy val publishSettings = Seq(
   credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 )
 
-
 lazy val projectSettings = Seq(
   name := "scala-ts",
-  version := "1.0.3",
+  version := "1.0.4-SNAPSHOT",
   organization := "com.github.miloszpp",
   scalaVersion := "2.12.6",
   mainClass in (Compile, run) := Some("com.mpc.scalats.Main"),
@@ -24,7 +23,8 @@ lazy val projectSettings = Seq(
   sbtVersion := "1.1.5"
 )
 
-lazy val root = project.in(file("."))
+lazy val root = project
+  .in(file("."))
   .settings(projectSettings, publishSettings)
 
 libraryDependencies ++= Seq(
