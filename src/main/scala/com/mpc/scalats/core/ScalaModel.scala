@@ -10,7 +10,11 @@ object ScalaModel {
 
   case class SeqRef(innerType: TypeRef) extends TypeRef
 
-  case class CaseClass(name: String, members: List[CaseClassMember], params: List[String], parent: Option[String]= None)
+  case class CaseClass(name: String,
+                       members: List[CaseClassMember],
+                       params: List[String],
+                       parent: Option[String] = None)
+      extends TypeRef
 
   case class CaseClassMember(name: String, typeRef: TypeRef)
 

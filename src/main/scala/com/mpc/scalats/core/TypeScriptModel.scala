@@ -8,11 +8,19 @@ object TypeScriptModel {
 
   sealed trait AccessModifier
 
-  case class CustomTypeRef(name: String, typeArgs: List[TypeRef]) extends TypeRef
+  case class CustomTypeRef(name: String, typeArgs: List[TypeRef])
+      extends TypeRef
 
   case class ArrayRef(innerType: TypeRef) extends TypeRef
 
-  case class InterfaceDeclaration(name: String, members: List[Member], typeParams: List[String], parent: Option[String] = None) extends Declaration
+  case class InterfaceDeclaration(name: String,
+                                  members: List[Member],
+                                  typeParams: List[String],
+                                  parent: Option[String] = None)
+      extends Declaration
+
+  case class ParentInterfaceDeclaration(name: String, children: List[String])
+      extends Declaration
 
   case class Member(name: String, typeRef: TypeRef)
 

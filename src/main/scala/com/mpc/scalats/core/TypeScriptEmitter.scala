@@ -13,12 +13,15 @@ object TypeScriptEmitter {
     declaration foreach {
       case decl: InterfaceDeclaration =>
         emitInterfaceDeclaration(decl, out)
+      case parent: ParentInterfaceDeclaration =>
+        emitParentDeclaration(parent, out)
     }
     out.flush()
     out.close()
   }
 
-  private def emitInterfaceDeclaration(decl: InterfaceDeclaration, out: PrintStream): Unit = {
+  private def emitInterfaceDeclaration(decl: InterfaceDeclaration,
+                                       out: PrintStream): Unit = {
     val InterfaceDeclaration(name, members, typeParams, parent) = decl
     out.print(s"export interface $name")
     emitTypeParams(decl.typeParams, out)
@@ -31,6 +34,14 @@ object TypeScriptEmitter {
     out.println()
   }
 
+  def emitParentDeclaration(parent: ParentInterfaceDeclaration,
+                            out: PrintStream): Unit = {
+    out.print(
+      s"export type ${parent.name} = ${parent.children.mkString(" | ")}"
+    )
+    out.println()
+  }
+
   private def emitTypeParams(params: List[String], out: PrintStream) =
     if (params.nonEmpty) {
       out.print("<")
@@ -39,19 +50,19 @@ object TypeScriptEmitter {
     }
 
   private def getTypeRefString(typeRef: TypeRef): String = typeRef match {
-    case NumberRef => "number"
-    case BooleanRef => "boolean"
-    case StringRef => "string"
-    case DateRef | DateTimeRef => "Date"
-    case ArrayRef(innerType) => s"${getTypeRefString(innerType)}[]"
+    case NumberRef                                     => "number"
+    case BooleanRef                                    => "boolean"
+    case StringRef                                     => "string"
+    case DateRef | DateTimeRef                         => "Date"
+    case ArrayRef(innerType)                           => s"${getTypeRefString(innerType)}[]"
     case CustomTypeRef(name, params) if params.isEmpty => name
     case CustomTypeRef(name, params) if params.nonEmpty =>
       s"$name<${params.map(getTypeRefString).mkString(", ")}>"
     case UnknownTypeRef(typeName) => typeName
-    case TypeParamRef(param) => param
-    case UnionType(inners@_*) => inners.map(getTypeRefString).mkString(" | ")
-    case NullRef => "null"
-    case UndefinedRef => "undefined"
+    case TypeParamRef(param)      => param
+    case UnionType(inners @ _*)   => inners.map(getTypeRefString).mkString(" | ")
+    case NullRef                  => "null"
+    case UndefinedRef             => "undefined"
   }
 
 }
